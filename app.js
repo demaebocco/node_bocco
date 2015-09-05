@@ -19,36 +19,29 @@ var callback_postMessageText = function(json){
 bocco.postMessageText("ぼっこにメッセージを送るよ",callback_postMessageText);
 */
 
-
+/*
 //音声メディアの取得
 var callback_getMessageMediaAudio = function(json){
 	console.log("callback_getMessageMediaAudio");
 	console.log(json);
 };
 bocco.getMessageMediaAudio(callback_getMessageMediaAudio);
+*/
 
+//録音した音声のテキスト変換
+// node-google-speech-api の修正 が必要
+// node_modules/google-speech-api/index.js
+// 60行目に モノラルにするメソッドを追加する       
+// .audioChannels(1)
 
-/*
+//変換元 BOCCOで録音した音声
 var url = "https://api.bocco.me/1/messages/130467.wav";
 //ブラウザAPIキー
 var apiKey = "AIzaSyAFltwcHvvnDCYDwo6fezLntFeHFrSXL70";
-var request = require('superagent');
-var speech = require('google-speech-api');
-var opts = {file:'output.flac',key:apiKey,lang:'ja-JP'};
 
-speech(opts, function(err, results) {
-    console.log( {err:err} );
-    console.log( {results:results} );
-  });
-*/
- 
-/*
-request.get(url)
-  .pipe(speech(opts, function (err, results) {
-    console.log( {err:err} );
-    console.log( {results:results} );
-  }));
-*/
-
-
-
+bocco.wav2text(url,apiKey,function( text ){
+	if(text != null){
+		//変換に成功
+		console.log({text:text});
+	}
+});

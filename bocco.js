@@ -3,7 +3,9 @@
 var BOCCO = function(){
 	this.request = require('request');
 	this.uuid = require('node-uuid');
-	
+	this.request = require('superagent');
+	this.speech = require('google-speech-api');
+
     //ルームID
     this.room_id = "f5020da2-f2ec-4d11-a1f9-7a21463a88ba";
 
@@ -83,6 +85,39 @@ var BOCCO = function(){
 			}
 		});
 	};
+	
+	/** google-speech-apiの戻り値の1件目のデータを取得する
+	*
+	* @return { transcript: 'タイマー', confidence: 0.95207101 }
+	*/
+	this.getConvText = function(results){
+    	var result = results[0].result;
+    	var alternative = result[0].alternative;
+    	var ret = alternative[0];
+    	return ret;
+	};
+	
+	/** google-speech-apiの戻り値の1件目のデータを取得する
+	*
+	* @param url BOCCOで録音したWAVファイルのURL
+	* @param key google-api-key
+	* @param callback コールバック ファンクション	
+	*
+	* @return { transcript: 'タイマー', confidence: 0.95207101 }
+	*/
+	this.wav2text = function(url,key,callback) {
+		var opts = {key:key,lang:'ja',filetype:'wav',sampleRate:8000};		
+		var _this = this;
+		this.request
+  			.get(url)
+  			.pipe(_this.speech(opts, function (err, results) {
+    			//Google speech で音声からテキストに変換する
+				var ret = _this.getConvText( results );
+				var text = ret.transcript;
+				console.log( text );
+				callback( text );
+  		}));
+	}
 };
 
 module.exports = new BOCCO();
