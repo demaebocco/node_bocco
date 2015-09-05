@@ -1,9 +1,9 @@
 /** BOCCO へのアクセスAPI
-*
 */
 var BOCCO = function(){
 	this.request = require('request');
 	this.uuid = require('node-uuid');
+	//this.CronJob = require('cron').CronJob;
 	
     //ルームID
     this.room_id = "f5020da2-f2ec-4d11-a1f9-7a21463a88ba";
@@ -16,8 +16,7 @@ var BOCCO = function(){
 	
 	/** 既存のメッセージの取得
      *
-     * @param room_id ルームID
-     * @param access_token アクセストークン
+     * @param callback コールバック ファンクション
      *
      */
 	this.getMessages = function(callback){
@@ -33,6 +32,7 @@ var BOCCO = function(){
 　　 /** メッセージの送信
      *
      * @param text 送信メッセージ
+     * @param callback コールバック ファンクション
      *
      */
 	this.postMessageText = function(text,callback){
@@ -48,26 +48,33 @@ var BOCCO = function(){
 	
 	/** 音声メディアの取得
      *
-     * @param message_id メッセージID
+     * @param callback コールバック ファンクション
      *
      */
-	this.getMessageMediaAudio = function(message_id,callback){
-		var newer_than_id = message_id - 1;
+	this.getMessageMediaAudio = function(callback){
+		var _this = this;
+		var fnc = function(){
+			//console.log("cron");
+			_this._getMessageMediaAudio(callback);
+		};
+		
+		//定期的に実行する
+		setInterval(fnc,2*1000);
+	}
+	
+	this._getMessageMediaAudio = function(callback){
 		var url = this.API_SERVER_HOST.replace("{room_id}",this.room_id)
-					+"?access_token="+this.access_token
-					+"&newer_than="+newer_than_id;
+					+"?access_token="+this.access_token;
 					
-		//console.log( url );
-		this.request.get(url, function(err, resp, body){			
-			//console.log( body );
-			var json = JSON.parse(body)[0];
-			//メディアタイプが audio だったら取得成功
-			if(json.media == 'audio'){							
+		this.request.get(url, function(err, resp, body){
+			var allJson = JSON.parse(body);
+			var json = allJson[allJson.length-1];
+			//console.log( json );			
+			//最新のメディアタイプが audio だったら取得成功
+			if(json.media == 'audio'){
+				console.log("audio:"+json.audio);					
 				//ここでコールバックする
-    			callback( json.audio );
-			}
-			else{
-				callback( null );
+    			callback( {id:json.id,'audio':json.audio} );
 			}
 		});
 	};
