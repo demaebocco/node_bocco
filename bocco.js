@@ -3,7 +3,7 @@
 */
 var BOCCO = function(){
 	this.request = require('request');
-	this.querystring = require('querystring');
+	this.uuid = require('node-uuid');
 	
     //ルームID
     this.room_id = "f5020da2-f2ec-4d11-a1f9-7a21463a88ba";
@@ -26,7 +26,7 @@ var BOCCO = function(){
 		//console.log( url );
 		this.request.get(url, function(err, resp, body){
 			//ここでコールバックする
-    		callback( body );  
+    		callback( JSON.parse(body) );  
 		});
 	};
 	
@@ -36,12 +36,13 @@ var BOCCO = function(){
      *
      */
 	this.postMessageText = function(text,callback){
+		var unique_id = this.uuid.v1();
 		var url = this.API_SERVER_HOST.replace("{room_id}",this.room_id);
-		var op = {'access_token':this.access_token,'media':text,'unique_id':'AAAAA'};
-		
-		this.request.post(url,op,function(err, resp, body){
+		var op = {'access_token':this.access_token,'media':'text','text':text,'unique_id':unique_id};
+
+		this.request.post(url,{form:op},function(err, resp, body){
 			//ここでコールバックする
-    		callback( body );  
+    		callback( JSON.parse(body) );
 		});
 	};
 	
