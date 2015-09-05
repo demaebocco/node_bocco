@@ -79,11 +79,10 @@ var BOCCO = function(){
     			callback( {id:json.id,'audio':json.audio} );
     			
     			//コールバック済みのオーディオIDを保存
-    			this.oldMediaAudioID = json.id;
-    			
-    			//再度、実行する
-    			setTimeout(fnc,2*1000);
+    			this.oldMediaAudioID = json.id;    			
 			}
+			//再度、実行する
+    		setTimeout(this._getMessageMediaAudio,2*1000);
 		});
 	};
 };
