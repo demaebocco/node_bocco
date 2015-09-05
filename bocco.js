@@ -56,33 +56,31 @@ var BOCCO = function(){
 	this.getMessageMediaAudio = function(callback){
 		var _this = this;
 		var fnc = function(){
-			//console.log("cron");
-			_this._getMessageMediaAudio(callback);
+			console.log("cron");
+			_this._getMessageMediaAudio(_this,callback);
 		};
 		
 		//定期的に実行する
-		setTimeout(fnc,2*1000);
+		setInterval(fnc,2*1000);
 	}
 	
-	this._getMessageMediaAudio = function(callback){
-		var url = this.API_SERVER_HOST.replace("{room_id}",this.room_id)
-					+"?access_token="+this.access_token;
-					
+	this._getMessageMediaAudio = function(self,callback){
+		var url = self.API_SERVER_HOST.replace("{room_id}",this.room_id)
+					+"?access_token="+self.access_token;
+							
 		this.request.get(url, function(err, resp, body){
 			var allJson = JSON.parse(body);
 			var json = allJson[allJson.length-1];
 			//console.log( json );			
 			//最新のメディアタイプが audio だったら取得成功
-			if((json.media == 'audio') && (this.oldMediaAudioID != json.id)){
+			if((json.media == 'audio') && (self.oldMediaAudioID != json.id)){
 				console.log("audio:"+json.audio);				
 				//ここでコールバックする
     			callback( {id:json.id,'audio':json.audio} );
     			
     			//コールバック済みのオーディオIDを保存
-    			this.oldMediaAudioID = json.id;    			
+    			self.oldMediaAudioID = json.id;    			
 			}
-			//再度、実行する
-    		setTimeout(this._getMessageMediaAudio,2*1000);
 		});
 	};
 };
