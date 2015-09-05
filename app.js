@@ -28,6 +28,7 @@ var callback_getMessageMediaAudio = function(json){
 bocco.getMessageMediaAudio(callback_getMessageMediaAudio);
 */
 
+
 //録音した音声のテキスト変換
 // node-google-speech-api の修正 が必要
 // node_modules/google-speech-api/index.js
@@ -45,3 +46,5 @@ bocco.wav2text(url,apiKey,function( text ){
 		console.log({text:text});
 	}
 });
+
+

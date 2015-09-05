@@ -114,10 +114,9 @@ var BOCCO = function(){
     			//Google speech で音声からテキストに変換する
 				var ret = _this.getConvText( results );
 				var text = ret.transcript;
-				console.log( text );
 				callback( text );
   		}));
-	}
+	};
 };
 
 module.exports = new BOCCO();
