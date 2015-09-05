@@ -9,24 +9,21 @@ var callback_getMessages = function(json){
 };
 //bocco.getMessages(callback_getMessages);
 
-/*
 //メッセージ送信
 //コールバック
 var callback_postMessageText = function(json){
 	console.log("callback_getMessages");
 	console.log(json);
 };
-bocco.postMessageText("ぼっこにメッセージを送るよ",callback_postMessageText);
-*/
+//bocco.postMessageText("ぼっこにメッセージを送るよ",callback_postMessageText);
 
-/*
+
 //音声メディアの取得
 var callback_getMessageMediaAudio = function(json){
 	console.log("callback_getMessageMediaAudio");
 	console.log(json);
 };
-bocco.getMessageMediaAudio(callback_getMessageMediaAudio);
-*/
+//bocco.getMessageMediaAudio(callback_getMessageMediaAudio);
 
 
 //録音した音声のテキスト変換
@@ -46,5 +43,3 @@ bocco.wav2text(url,apiKey,function( text ){
 		console.log({text:text});
 	}
 });
-
-

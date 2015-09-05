@@ -3,7 +3,7 @@
 var BOCCO = function(){
 	this.request = require('request');
 	this.uuid = require('node-uuid');
-	this.request = require('superagent');
+	this.superagent = require('superagent');
 	this.speech = require('google-speech-api');
 
     //ルームID
@@ -108,7 +108,7 @@ var BOCCO = function(){
 	this.wav2text = function(url,key,callback) {
 		var opts = {key:key,lang:'ja',filetype:'wav',sampleRate:8000};		
 		var _this = this;
-		this.request
+		this.superagent
   			.get(url)
   			.pipe(_this.speech(opts, function (err, results) {
     			//Google speech で音声からテキストに変換する
