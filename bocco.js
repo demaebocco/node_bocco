@@ -3,7 +3,6 @@
 var BOCCO = function(){
 	this.request = require('request');
 	this.uuid = require('node-uuid');
-	//this.CronJob = require('cron').CronJob;
 	
     //ルームID
     this.room_id = "f5020da2-f2ec-4d11-a1f9-7a21463a88ba";
@@ -13,6 +12,9 @@ var BOCCO = function(){
     
     //BOSSOサーバAPI
 	this.API_SERVER_HOST = "https://api.bocco.me/1/rooms/{room_id}/messages";
+	
+	//受信済みのオーディオID
+	this.oldMediaAudioID = -1;
 	
 	/** 既存のメッセージの取得
      *
@@ -71,10 +73,13 @@ var BOCCO = function(){
 			var json = allJson[allJson.length-1];
 			//console.log( json );			
 			//最新のメディアタイプが audio だったら取得成功
-			if(json.media == 'audio'){
-				console.log("audio:"+json.audio);					
+			if((json.media == 'audio') && (this.oldMediaAudioID != json.id)){
+				console.log("audio:"+json.audio);				
 				//ここでコールバックする
     			callback( {id:json.id,'audio':json.audio} );
+    			
+    			//コールバック済みのオーディオIDを保存
+    			this.oldMediaAudioID = json.id;
 			}
 		});
 	};
