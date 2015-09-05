@@ -44,7 +44,13 @@ var BOCCO = function(){
 		var url = this.API_SERVER_HOST.replace("{room_id}",this.room_id);
 		var op = {'access_token':this.access_token,'media':'text','text':text,'unique_id':unique_id};
 
-		this.request.post(url,{form:op},function(err, resp, body){
+		var options = {
+  			url: url,
+  			headers: {'Accept-Language':'ja-JP'},
+ 	 		formData:op
+		};
+		
+		this.request.post(options,function(err, resp, body){
 			//ここでコールバックする
     		callback( JSON.parse(body) );
 		});
