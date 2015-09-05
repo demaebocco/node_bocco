@@ -61,7 +61,7 @@ var BOCCO = function(){
 		};
 		
 		//定期的に実行する
-		setInterval(fnc,2*1000);
+		setTimeout(fnc,2*1000);
 	}
 	
 	this._getMessageMediaAudio = function(callback){
@@ -80,6 +80,9 @@ var BOCCO = function(){
     			
     			//コールバック済みのオーディオIDを保存
     			this.oldMediaAudioID = json.id;
+    			
+    			//再度、実行する
+    			setTimeout(fnc,2*1000);
 			}
 		});
 	};
