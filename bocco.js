@@ -18,6 +18,26 @@ var BOCCO = function(){
 	//受信済みのオーディオID
 	this.oldMediaAudioID = -1;
 	
+    /** ルームIDを設定する
+     *
+     * @param room_id 設定したいルームID
+     *
+     */
+    this.setRoomId = function(room_id){
+        this.room_id = room_id;
+        return this;
+    }
+    
+    /** ユーザー アクセストークンを設定する
+     *
+     * @param access_token 設定したいユーザー アクセストークン
+     *
+     */
+    this.setAccessToken = function(access_token){
+        this.access_token = access_token;
+        return this;
+    }
+    
 	/** 既存のメッセージの取得
      *
      * @param callback コールバック ファンクション

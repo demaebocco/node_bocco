@@ -1,6 +1,10 @@
 var bocco = require('./bocco.js');
 var newsFeed = require('./news-feed.js');
 
+// bocco のルームID,アクセストークンを設定
+bocco.setRoomId("f5020da2-f2ec-4d11-a1f9-7a21463a88ba")
+     .setAccessToken("a3d24268891402706e765d128c647429bd922099a2000d79a68a1fec5406cc45");
+
 //メッセージ一覧を取得
 //コールバック
 var callback_getMessages = function(json){
@@ -45,7 +49,7 @@ bocco.wav2text(url,apiKey,function( text ){
 */
 
 //例) はてなブックマーク テクノロジー
-var rss_url = "http://feeds.feedburner.com/hatena/b/hotentry";
+var rss_url = "http://b.hatena.ne.jp/entrylist/it.rss";
 var rss_cnt = 0;
 
 //コールバック RSS記事の数だけコールバックされる
@@ -64,7 +68,7 @@ var fnc = function( feeds ){
 	//console.log( item.title );
 	
 	//TODO ここで日付とタイトルだけBOCCOに送信
-	var msg = yymmdd+" "+item.title;
+	var msg = item.title;
 	console.log( msg );
 	bocco.postMessageText(msg,function(json){
 	
@@ -72,4 +76,7 @@ var fnc = function( feeds ){
 };
 
 newsFeed.getFeed(rss_url,fnc);
+//インターバル実行
+setInterval(function(){ newsFeed.getFeed(rss_url,fnc); }, 3*60*1000);
+
 
