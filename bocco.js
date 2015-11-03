@@ -84,7 +84,7 @@ var BOCCO = function(){
 	this.getMessageMediaAudio = function(callback){
 		var _this = this;
 		var fnc = function(){
-			console.log("cron");
+			// console.log("cron");
 			_this._getMessageMediaAudio(_this,callback);
 		};
 		
