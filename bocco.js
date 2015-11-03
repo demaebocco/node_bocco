@@ -146,3 +146,9 @@ var BOCCO = function(){
 };
 
 module.exports = new BOCCO();
+module.exports.create = function (roomId, accessToken) {
+  var bocco = new BOCCO();
+  return bocco
+    .setRoomId(roomId)
+    .setAccessToken(accessToken);
+};
